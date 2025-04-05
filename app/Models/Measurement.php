@@ -26,7 +26,8 @@ class Measurement extends Model
         'room_name',    // Name/identifier for the room being measured
         'width',        // Width measurement of the room
         'length',       // Length measurement of the room
-        'user_id'       // Foreign key to users table
+        'user_id',      // Foreign key to users table
+        'address_id'    // Foreign key to addresses table
     ];
 
     /**
@@ -37,5 +38,15 @@ class Measurement extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get the address that owns this measurement
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function address(): BelongsTo
+    {
+        return $this->belongsTo(Address::class);
     }
 }

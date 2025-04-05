@@ -12,9 +12,23 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link href="{{ url('/') }}" :active="request()->is('/')">
+                        {{ __('Home') }}
+                    </x-nav-link>
                     <x-nav-link href="{{ route('home') }}" :active="request()->routeIs('home')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+                    @if(Auth::user()->usertype !== 'admin')
+                        <x-nav-link href="{{ route('addresses.index') }}" :active="request()->routeIs('addresses.index')">
+                            {{ __('Addresses') }}
+                        </x-nav-link>
+                        <x-nav-link href="{{ route('measurements.index') }}" :active="request()->routeIs('measurements.index')">
+                            {{ __('Measurements') }}
+                        </x-nav-link>
+                        <x-nav-link href="{{ route('quotes.index') }}" :active="request()->routeIs('quotes.index')">
+                            {{ __('Quotes') }}
+                        </x-nav-link>
+                    @endif
                 </div>
             </div>
 

@@ -33,12 +33,16 @@ class Quote extends Model
      * @var array<string>
      */
     protected $fillable = [
-        'status',          // Current status of the quote (e.g., pending, approved)
-        'measurement_id',   // Foreign key to measurements table
-        'price',           // Quoted price for the service
-        'user_id',         // Foreign key to users table
-        'created_at',      // Timestamp when quote was created
-        'updated_at'       // Timestamp when quote was last updated
+        'status',                    // Current status of the quote (e.g., pending, approved)
+        'measurement_id',             // Foreign key to measurements table (optional)
+        'carpet_id',                 // Foreign key to carpets table (optional)
+        'custom_carpet_description', // Description for custom carpet requests
+        'address_id',                // Foreign key to addresses table
+        'price',                     // Quoted price for the service
+        'user_id',                   // Foreign key to users table
+        'notes',                     // Additional notes for the quote
+        'created_at',                // Timestamp when quote was created
+        'updated_at'                 // Timestamp when quote was last updated
     ];
 
     /**
@@ -49,6 +53,28 @@ class Quote extends Model
     public function measurement(): BelongsTo
     {
         return $this->belongsTo(Measurement::class);
+    }
+
+
+
+    /**
+     * Get the carpet associated with this quote
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function carpet(): BelongsTo
+    {
+        return $this->belongsTo(Carpet::class);
+    }
+
+    /**
+     * Get the address associated with this quote
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function address(): BelongsTo
+    {
+        return $this->belongsTo(Address::class);
     }
 
     /**

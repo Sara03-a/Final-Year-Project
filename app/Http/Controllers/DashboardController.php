@@ -26,7 +26,14 @@ class DashboardController extends Controller
         // Get the currently authenticated user
         $user = Auth::user();
         
-        // Retrieve user's quotes with related user and measurement data, ordered by latest first
+        // Check if user is admin and redirect to admin dashboard
+        if ($user->usertype === 'admin') {
+            // For admin dashboard, get all users with their related data
+            $users = User::with(['quotes', 'measurements', 'addresses'])->get();
+            return view('admin.index', compact('users'));
+        }
+        
+        // For regular users, retrieve their quotes with related data
         $quotes = $user->quotes()->with(['user', 'measurement'])->latest()->get();
         
         // Get user's measurements, ordered by latest first

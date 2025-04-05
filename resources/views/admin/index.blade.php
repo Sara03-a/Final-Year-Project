@@ -18,20 +18,31 @@
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+
+
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
                     <!-- Search Section -->
                     <div class="mb-6">
-                        <div class="flex gap-4">
-                            <div class="flex-1">
-                                <input type="text" id="search" placeholder="Search by name or address..." class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                        <form action="{{ route('home') }}" method="GET">
+                            <div class="flex gap-4">
+                                <div class="flex-1">
+                                    <input type="text" id="search" name="search" placeholder="Search by name or address..." class="w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" value="{{ request('search') }}">
+                                </div>
+                                <button type="submit" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                                    Search
+                                </button>
                             </div>
-                            <button type="button" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                                Search
-                            </button>
-                            <button type="button" class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2">
-                                Add New
-                            </button>
+                        </form>
+                        @if(request('search'))
+                        <div class="mt-4">
+                            <a href="{{ route('home') }}" class="inline-flex items-center px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                                </svg>
+                                Back to All Results
+                            </a>
                         </div>
+                        @endif
                     </div>
 
                     <!-- Data Table -->
@@ -55,24 +66,34 @@
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             @if($user->addresses->isNotEmpty())
-                                                <div class="text-sm text-gray-900">{{ $user->addresses->first()->address_line1 }}</div>
-                                                <div class="text-sm text-gray-500">{{ $user->addresses->first()->city }}, {{ $user->addresses->first()->postcode }}</div>
+                                                <div class="text-sm text-gray-900">{{ $user->addresses->first()->street_address }}</div>
+                                                <div class="text-sm text-gray-500">{{ $user->addresses->first()->city }}, {{ $user->addresses->first()->postal_code }}</div>
                                             @else
                                                 <div class="text-sm text-gray-500">No address provided</div>
                                             @endif
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $user->quotes->count() > 0 ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800' }}">
-                                                {{ $user->quotes->count() }} Quotes
-                                            </span>
+                                            @foreach($user->quotes as $quote)
+                                                @php
+                                                    $statusColor = match($quote->status) {
+                                                        'paid' => 'bg-green-100 text-green-800',
+                                                        'pending' => 'bg-yellow-100 text-yellow-800',
+                                                        'approval_required' => 'bg-orange-100 text-orange-800',
+                                                        default => 'bg-gray-100 text-gray-800'
+                                                    };
+                                                @endphp
+                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $statusColor }} mr-1 mb-1">
+                                                    Quote #{{ $quote->id }}: {{ ucfirst(str_replace('_', ' ', $quote->status)) }}
+                                                </span>
+                                            @endforeach
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $user->measurements->count() > 0 ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800' }}">
                                                 {{ $user->measurements->count() }} Measurements
                                             </span>
                                         </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                            <a href="#" class="text-indigo-600 hover:text-indigo-900">View</a>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                            <a href="{{ route('admin.user.quotes', $user) }}" class="text-indigo-600 hover:text-indigo-900">View All Quotes</a>
                                         </td>
                                     </tr>
                                 @endforeach
