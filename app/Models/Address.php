@@ -38,4 +38,14 @@ class Address extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    /**
+     * Get the measurements associated with this address
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function measurements(): HasMany
+    {
+        return $this->hasMany(Measurement::class);
+    }
 }

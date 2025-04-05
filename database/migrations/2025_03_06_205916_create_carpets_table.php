@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->text('description');
-            $table->decimal('price_per_sq_meter', 10, 2);
-            $table->string('image')->nullable(); // Store image path
+            $table->decimal('price_per_sq_meter', 8, 2);
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }
