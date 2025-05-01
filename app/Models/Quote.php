@@ -33,7 +33,7 @@ class Quote extends Model
      * @var array<string>
      */
     protected $fillable = [
-        'status',                    // Current status of the quote (e.g., pending, approved)
+        'status',                    // Current status of the quote (e.g., approval_required, approved)
         'measurement_id',             // Foreign key to measurements table (optional)
         'carpet_id',                 // Foreign key to carpets table (optional)
         'custom_carpet_description', // Description for custom carpet requests
@@ -41,6 +41,7 @@ class Quote extends Model
         'price',                     // Quoted price for the service
         'user_id',                   // Foreign key to users table
         'notes',                     // Additional notes for the quote
+        'payment_method',            // Payment method selection (cash/online)
         'created_at',                // Timestamp when quote was created
         'updated_at'                 // Timestamp when quote was last updated
     ];

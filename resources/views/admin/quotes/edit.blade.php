@@ -42,9 +42,9 @@
                                 <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                     <span class="text-gray-500 sm:text-sm">£</span>
                                 </div>
-                                <input type="number" name="total_price" id="total_price" step="0.01" min="0" class="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-7 pr-12 sm:text-sm border-gray-300 rounded-md" value="{{ old('total_price', $quote->price) }}" placeholder="0.00">
+                                <input type="number" name="price" id="price" step="0.01" min="0" class="focus:ring-indigo-500 focus:border-indigo-500 block w-full pl-7 pr-12 sm:text-sm border-gray-300 rounded-md" value="{{ old('price', $quote->price) }}" placeholder="0.00">
                             </div>
-                            @error('total_price')
+                            @error('price')
                                 <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
@@ -57,7 +57,8 @@
                             <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
                             <div class="mt-1">
                                 <select id="status" name="status" class="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
-                                    <option value="pending" {{ $quote->status === 'pending' ? 'selected' : '' }}>Pending</option>
+                                    <option value="approval_required" {{ $quote->status === 'approval_required' ? 'selected' : '' }}>Approval Required</option>
+                                    <option value="payment_received" {{ $quote->status === 'payment_received' ? 'selected' : '' }}>Payment Received</option>
                                     <option value="approved" {{ $quote->status === 'approved' ? 'selected' : '' }}>Approved</option>
                                     <option value="rejected" {{ $quote->status === 'rejected' ? 'selected' : '' }}>Rejected</option>
                                 </select>

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('measurement_id');
             $table->decimal('price', 10, 2)->nullable();
-            $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
+            $table->enum('status', ['approved', 'rejected', 'approval_required', 'payment_received'])->default('approval_required');
             $table->timestamps();
 
             $table->foreign('measurement_id')->references('id')->on('measurements')->onDelete('cascade');

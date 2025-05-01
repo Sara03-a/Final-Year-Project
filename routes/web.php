@@ -33,6 +33,9 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
     Route::get('/quotes/{quote}/edit', [QuoteController::class, 'edit'])->name('quotes.edit');
     Route::put('/quotes/{quote}', [QuoteController::class, 'update'])->name('quotes.update');
     Route::delete('/quotes/{quote}', [QuoteController::class, 'destroy'])->name('quotes.destroy');
+
+Route::post('/quotes/{quote}/pay', [QuoteController::class, 'pay'])
+    ->name('quotes.pay');
     
     // Admin routes
     Route::middleware(['admin'])->prefix('admin')->group(function () {
@@ -42,6 +45,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified']
         Route::post('/quotes', [AdminController::class, 'storeQuote'])->name('admin.quotes.store');
         Route::get('/quotes/{quote}', [AdminController::class, 'showQuote'])->name('admin.quotes.show');
         Route::get('/quotes/{quote}/edit', [AdminController::class, 'editQuote'])->name('admin.quotes.edit');
+        Route::put('/quotes/{quote}', [AdminController::class, 'updateQuote'])->name('admin.quotes.update');
         Route::delete('/quotes/{quote}', [AdminController::class, 'destroyQuote'])->name('admin.quotes.destroy');
         Route::get('/user/{user}/quotes', [AdminController::class, 'userQuotes'])->name('admin.user.quotes');
 
