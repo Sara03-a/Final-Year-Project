@@ -33,15 +33,25 @@
                                             {{ Str::limit($quote->description, 50) }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            £{{ number_format($quote->total_price, 2) }}
+                                            £{{ number_format($quote->price, 2) }}
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
-                                                @if($quote->status === 'approved') bg-green-100 text-green-800
-                                                @elseif($quote->status === 'rejected') bg-red-100 text-red-800
-                                                @else bg-yellow-100 text-yellow-800 @endif">
-                                                {{ ucfirst($quote->status) }}
-                                            </span>
+                                            @switch($quote->status)
+                                                @case('approved')
+                                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Approved</span>
+                                                    @break
+                                                @case('rejected')
+                                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">Rejected</span>
+                                                    @break
+                                                @case('approval_required')
+                                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-orange-100 text-orange-800">Approval Required</span>
+                                                    @break
+                                                @case('payment_received')
+                                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">Payment Received</span>
+                                                    @break
+                                                @default
+                                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">Unknown</span>
+                                            @endswitch
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                             {{ $quote->created_at->format('Y-m-d H:i') }}

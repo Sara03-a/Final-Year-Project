@@ -16,12 +16,17 @@ class QuoteController extends Controller
     public function update(Request $request, Quote $quote)
     {
         $validated = $request->validate([
-            'status' => 'required|in:pending,approval_required,paid',
+            'status' => 'required|in:approval_required,paid,payment_received',
             'notes' => 'nullable|string|max:1000',
+            'total_price' => 'required|numeric|min:0'
         ]);
 
-        $quote->update($validated);
+        $quote->update([
+            'status' => $validated['status'],
+            'notes' => $validated['notes'],
+            'price' => $validated['total_price']
+        ]);
 
-        return redirect()->back()->with('success', 'Quote updated successfully.');
+        return redirect()->route('admin.quotes.show', $quote)->with('success', 'Quote updated successfully.');
     }
 }

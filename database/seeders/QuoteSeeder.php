@@ -27,13 +27,13 @@ class QuoteSeeder extends Seeder
             $area = $measurement->width * $measurement->length;
             
             // Calculate total price based on carpet price per sq meter and area
-            $total_price = $firstCarpet->price_per_sq_meter * $area;
+            $estimated_price = $firstCarpet->price_per_sq_meter * $area;
 
             Quote::create([
                 'measurement_id' => $measurement->id,
                 'carpet_id' => $firstCarpet->id,
-                'price' => round($total_price, 2),
-                'status' => 'pending',
+                'price' => $price->id,
+                'status' => $status->id,
                 'user_id' => $measurement->user_id
             ]);
         }

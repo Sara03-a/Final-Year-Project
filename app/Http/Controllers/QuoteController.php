@@ -47,7 +47,7 @@ class QuoteController extends Controller
         $quote->measurement_id = $validated['measurement_id'];
         $quote->carpet_id = $request->input('carpet_id');
         $quote->notes = $notes;
-        $quote->status = 'pending';
+        $quote->status = 'approval_required';
         $quote->save();
 
         return redirect()->route('quotes.index')
@@ -96,6 +96,24 @@ class QuoteController extends Controller
 
         return redirect()->route('quotes.index')
             ->with('success', 'Quote updated successfully!');
+    }
+
+    public function pay(Request $request, Quote $quote)
+    {
+        if ($quote->user_id !== auth()->id()) {
+            abort(403);
+        }
+
+        $validated = $request->validate([
+            'payment_method' => 'required|in:cash,online'
+        ]);
+
+        $quote->update([
+            'payment_method' => $validated['payment_method'],
+            'status' => 'paid'
+        ]);
+
+        return redirect()->back()->with('success', 'Payment method recorded - status updated to paid');
     }
 
     public function destroy(Quote $quote)
