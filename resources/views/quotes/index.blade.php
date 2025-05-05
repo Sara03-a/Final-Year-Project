@@ -9,8 +9,9 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-6">
                 @if($quotes->count() > 0)
+                    <h3 class="text-lg font-medium text-gray-900 mb-4">{{ __('Active Quotes') }}</h3>
                     <div class="space-y-4">
-                        @foreach($quotes as $quote)
+                        @foreach($quotes->whereNotIn('status', ['payment_received']) as $quote)
                             <div class="border rounded-lg p-4 hover:bg-gray-50">
                                 <div class="flex justify-between items-start">
                                     <div>
@@ -36,7 +37,7 @@
                                     </div>
                                     <div class="flex flex-col items-end space-y-2">
                                         <span class="px-2 py-1 text-xs rounded-full {{ $quote->status === 'approval_required' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800' }}">
-                                            {{ $quote->status === 'approval_required' ? 'Approval Required' : ucfirst($quote->status) }}
+                                            {{ $quote->status === 'approval_required' ? 'Approval Required' : ucwords(str_replace('_', ' ', $quote->status)) }}
                                         </span>
                                         @if($quote->status === 'approved')
                                         <a href="{{ route('quotes.show', $quote) }}" class="inline-flex items-center px-3 py-1 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition ease-in-out duration-150 mt-2">
@@ -62,6 +63,30 @@
                             </div>
                         @endforeach
                     </div>
+
+                    @if($quotes->where('status', 'payment_received')->count() > 0)
+                        <div class="mt-8">
+                            <h3 class="text-lg font-medium text-gray-900 mb-4">{{ __('Previous Orders') }}</h3>
+                            @foreach($quotes->where('status', 'payment_received') as $quote)
+                                <div class="border rounded-lg p-4 hover:bg-gray-50 mb-4 opacity-75">
+                                    <div class="flex justify-between items-start">
+                                        <div>
+                                            <h4 class="font-semibold">Order #{{ $quote->id }}</h4>
+                                            <p class="text-sm text-gray-600">Completed: {{ $quote->updated_at->format('M d, Y') }}</p>
+                                        </div>
+                                        <div class="flex flex-col items-end space-y-2">
+                                            <span class="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800">
+                                                Payment Received
+                                            </span>
+                                            <a href="{{ route('quotes.show', $quote) }}" class="inline-flex items-center px-3 py-1 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                                                {{ __('View Order') }}
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
                 @else
                     <p class="text-gray-600">{{ __('No quotes found.') }}</p>
                 @endif

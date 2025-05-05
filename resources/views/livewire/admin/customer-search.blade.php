@@ -36,7 +36,7 @@
                         <td class="border-dashed border-t border-gray-200 px-6 py-4">
                             @foreach($customer->quotes as $quote)
                                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 mr-2">
-                                    {{ $quote->status }}
+                                    {{ Str::title(str_replace('_', ' ', $quote->status)) }}
                                 </span>
                             @endforeach
                         </td>

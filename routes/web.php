@@ -67,4 +67,22 @@ Route::post('/quotes/{quote}/pay', [QuoteController::class, 'pay'])
         Route::put('/measurements/{measurement}', [AdminController::class, 'updateMeasurement'])->name('admin.measurements.update');
         Route::delete('/measurements/{measurement}', [AdminController::class, 'destroyMeasurement'])->name('admin.measurements.destroy');
     });
+
+Route::post('/payment/handle/{quote}', [\App\Http\Controllers\PaymentController::class, 'handlePayment'])
+    ->name('payment.handle');
+
+Route::get('/payment/success', [\App\Http\Controllers\PaymentController::class, 'success'])
+    ->name('payment.success');
+
+Route::get('/payment/cancel', [\App\Http\Controllers\PaymentController::class, 'cancel'])
+    ->name('payment.cancel');
 });
+
+Route::post('/payment/handle/{quote}', [\App\Http\Controllers\PaymentController::class, 'handlePayment'])
+    ->name('payment.handle');
+
+Route::get('/payment/success', [\App\Http\Controllers\PaymentController::class, 'success'])
+    ->name('payment.success');
+
+Route::get('/payment/cancel', [\App\Http\Controllers\PaymentController::class, 'cancel'])
+    ->name('payment.cancel');

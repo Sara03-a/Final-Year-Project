@@ -83,7 +83,11 @@
                                                     };
                                                 @endphp
                                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $statusColor }} mr-1 mb-1">
-                                                    Quote #{{ $quote->id }}: {{ ucfirst(str_replace('_', ' ', $quote->status)) }}
+                                                    @if($quote->status === 'payment_received')
+                                                        Order #{{ $quote->id }}: {{ ucfirst(str_replace('_', ' ', $quote->status)) }}
+                                                    @else
+                                                        Quote #{{ $quote->id }}: {{ ucfirst(str_replace('_', ' ', $quote->status)) }}
+                                                    @endif
                                                 </span>
                                             @endforeach
                                         </td>

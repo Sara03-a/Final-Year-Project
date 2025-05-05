@@ -131,13 +131,19 @@ class AdminController extends Controller
     public function updateQuote(Request $request, Quote $quote)
     {
         $validatedData = $request->validate([
-            'description' => 'required|string',
-            'total_price' => 'required|numeric',
-            'status' => 'required|in:pending,approved,rejected'
+            'notes' => 'nullable|string',
+            'price' => 'required|numeric',
+            'status' => 'required|in:pending,approved,rejected,approval_required,payment_received'
         ]);
 
-        $quote->update($validatedData);
-        return redirect()->route('admin.quotes')->with('success', 'Quote updated successfully');
+        $quote->update([
+            'notes' => $validatedData['notes'] ?? $quote->notes,
+            'price' => $validatedData['price'],
+            'status' => $validatedData['status'],
+        ]);
+        
+        return redirect()->route('admin.user.quotes', ['user' => $quote->user_id])
+            ->with('success', 'Quote updated successfully');
     }
 
     public function destroyQuote(Quote $quote)
