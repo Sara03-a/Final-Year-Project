@@ -32,8 +32,8 @@ class QuoteSeeder extends Seeder
             Quote::create([
                 'measurement_id' => $measurement->id,
                 'carpet_id' => $firstCarpet->id,
-                'price' => $price->id,
-                'status' => $status->id,
+                'price' => $estimated_price,
+                'status' => 'pending',
                 'user_id' => $measurement->user_id
             ]);
         }
