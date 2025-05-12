@@ -12,12 +12,11 @@ use App\Http\Controllers\MeasurementController;
 
 Route::get('/',[AdminController::class,'home']);
 Route::get('/home',[AdminController::class,'index'])->name('home');
+// Carpets routes
+Route::get('/carpets', [CarpetController::class, 'index'])->name('carpets.index');
 
 Route::middleware(['auth:sanctum', config('jetstream.auth_session'), 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    
-    // Carpets routes
-    Route::get('/carpets', [CarpetController::class, 'index'])->name('carpets.index');
 
     // Address routes
     Route::resource('addresses', AddressController::class);

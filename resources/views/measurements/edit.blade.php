@@ -42,9 +42,15 @@
 
                         <!-- Address -->
                         <div>
-                            <x-label for="address" value="{{ __('Address') }}" />
-                            <x-input id="address" class="block mt-1 w-full" type="text" name="address" :value="old('address', $measurement->address)" required />
-                            @error('address')
+                            <x-label for="address_id" value="{{ __('Address') }}" />
+                            <select name="address_id" id="address_id" class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                                @foreach($addresses as $address)
+                                    <option value="{{ $address->id }}" {{ $measurement->address_id == $address->id ? 'selected' : '' }}>
+                                        {{ $address->street_address }}, {{ $address->city }}, {{ $address->postal_code }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            @error('address_id')
                                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                             @enderror
                         </div>

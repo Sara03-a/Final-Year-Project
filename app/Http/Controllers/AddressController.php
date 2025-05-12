@@ -6,6 +6,7 @@ use App\Models\Address;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+// Show a list of addresses for authenticated user
 class AddressController extends Controller
 {
     public function index()
@@ -14,13 +15,16 @@ class AddressController extends Controller
         return view('addresses.index', compact('addresses'));
     }
 
+    // Show the form to create a new address
     public function create()
     {
         return view('addresses.create');
     }
 
+    // Handles storing a new address in the database
     public function store(Request $request)
-    {
+    {   
+        // Validates incoming form data
         $validated = $request->validate([
             'label' => 'required|string|max:255',
             'street_address' => 'required|string|max:255',

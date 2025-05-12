@@ -15,20 +15,32 @@
                     <x-nav-link href="{{ url('/') }}" :active="request()->is('/')">
                         {{ __('Home') }}
                     </x-nav-link>
-                    <x-nav-link href="{{ route('home') }}" :active="request()->routeIs('home')">
-                        {{ __('Dashboard') }}
+                    <x-nav-link href="{{ route('carpets.index') }}" :active="request()->routeIs('carpets.index')">
+                        {{ __('Products') }}
                     </x-nav-link>
-                    @if(Auth::user()->usertype !== 'admin')
-                        <x-nav-link href="{{ route('addresses.index') }}" :active="request()->routeIs('addresses.index')">
-                            {{ __('Addresses') }}
-                        </x-nav-link>
-                        <x-nav-link href="{{ route('measurements.index') }}" :active="request()->routeIs('measurements.index')">
-                            {{ __('Measurements') }}
-                        </x-nav-link>
-                        <x-nav-link href="{{ route('quotes.index') }}" :active="request()->routeIs('quotes.index')">
-                            {{ __('Quotes') }}
-                        </x-nav-link>
-                    @endif
+                    @auth
+                        @if(Auth::user()->usertype !== 'admin')
+                            <x-nav-link href="{{ route('addresses.index') }}" :active="request()->routeIs('addresses.index')">
+                                {{ __('Addresses') }}
+                            </x-nav-link>
+                            <x-nav-link href="{{ route('measurements.index') }}" :active="request()->routeIs('measurements.index')">
+                                {{ __('Measurements') }}
+                            </x-nav-link>
+                            <x-nav-link href="{{ route('quotes.index') }}" :active="request()->routeIs('quotes.index')">
+                                {{ __('Quotes') }}
+                            </x-nav-link>
+                        @endif
+                    @else
+                        <x-responsive-nav-link href="{{ route('login') }}" :active="request()->routeIs('login')">
+                            {{ __('Login') }}
+                        </x-responsive-nav-link>
+                        
+                        @if (Route::has('register'))
+                            <x-responsive-nav-link href="{{ route('register') }}" :active="request()->routeIs('register')">
+                                {{ __('Register') }}
+                            </x-responsive-nav-link>
+                        @endif
+                    @endauth
                 </div>
             </div>
 

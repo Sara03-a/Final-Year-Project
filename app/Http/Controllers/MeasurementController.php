@@ -47,7 +47,14 @@ class MeasurementController extends Controller
         if (auth()->id() !== $measurement->user_id) {
             abort(403, 'Unauthorised action.');
         }
-        return view('measurements.edit', compact('measurement'));
+        
+        // Get addresses for the current user
+        $addresses = Auth::user()->addresses()->get();
+        
+        return view('measurements.edit', [
+            'measurement' => $measurement,
+            'addresses' => $addresses
+        ]);
     }
 
     public function update(Request $request, Measurement $measurement)
@@ -60,7 +67,7 @@ class MeasurementController extends Controller
             'room_name' => 'required|string|max:255',
             'length' => 'required|numeric|min:0',
             'width' => 'required|numeric|min:0',
-            'address' => 'required|string|max:255',
+            'address_id' => 'required|exists:addresses,id', // Changed from 'address'
         ]);
 
         $measurement->update($validated);
